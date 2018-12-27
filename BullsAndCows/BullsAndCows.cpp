@@ -1,21 +1,45 @@
-// BullsAndCows.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include "pch.h"
 #include <iostream>
+#include <string>
+
+using namespace std;
+void print_intro();
+string get_guess();
+void print_guess(string Guess);
+
+constexpr int WORD_LENGTH = 5;
+constexpr int NUMBER_OF_TURNS = 5;
 
 int main()
 {
-    std::cout << "Hello World!\n"; 
+	print_intro();
+	for (int i = 0; i < NUMBER_OF_TURNS; i++)
+	{
+		string Guess = get_guess();
+		print_guess(Guess);
+	}
+	return 0;
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
+// Introduce the game
+void print_intro()
+{
+	cout << "Welcome to Bulls and Cows, a fun word game." << endl;
+	cout << "Can you guess the " << WORD_LENGTH;
+	cout << " letter isogram I'm thinking of?" << endl;
+}
 
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
+// Get a guess from a player
+string get_guess()
+{
+	cout << endl << "Enter your guess: ";
+	string Guess;
+	getline(cin, Guess);
+	return Guess;
+}
+
+// Repeat the guess back to the player
+void print_guess(string Guess)
+{
+	cout << "Your guess was: " << Guess << endl;
+}

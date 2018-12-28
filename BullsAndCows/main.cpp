@@ -44,7 +44,7 @@ void PlayGame()
 	{
 		FText Guess = GetGuess();
 		// UNDONE make loop checking valid
-
+		EGuessStatus Status = BCGame.CheckGuessValidity(Guess);
 		FBullCowCount BullCowCount = BCGame.SubmitGuess(Guess);
 		PrintResult(BullCowCount);
 		

@@ -24,16 +24,16 @@ void FBullCowGame::Reset()
 	CurrentTry = 1;
 }
 
-EWordStatus FBullCowGame::CheckGuessValidity(FString Guess) const
+EGuessStatus FBullCowGame::CheckGuessValidity(FString Guess) const
 {
 	if (!IsAnIsogram(Guess))
-		return EWordStatus::Not_Isogram;
+		return EGuessStatus::Not_Isogram;
 	else if (!IsLowercase(Guess))
-		return  EWordStatus::Not_Lowercase;
+		return  EGuessStatus::Not_Lowercase;
 	else if (!IsSameLength(Guess))
-		return EWordStatus::Wrong_Length;
+		return EGuessStatus::Wrong_Length;
 	else
-		return EWordStatus::OK;
+		return EGuessStatus::OK;
 }
 
 FBullCowCount FBullCowGame::SubmitGuess(FString Guess)

@@ -9,14 +9,11 @@ using int32 = int;
 void PrintIntro();
 void PlayGame();
 FText GetGuess();
-void PrintGuess(FText Guess);
+void PrintResult(FBullCowCount Count);
 bool AskToPlayAgain();
 
 // Instantiate a new game
 FBullCowGame BCGame;
-
-constexpr int32 WORD_LENGTH = 5;
-
 
 int main()
 {
@@ -32,9 +29,8 @@ int main()
 
 void PrintIntro()
 {
-	// TODO get the word length form the class
 	std::cout << "Welcome to Bulls and Cows, a fun word game." << std::endl;
-	std::cout << "Can you guess the " << WORD_LENGTH;
+	std::cout << "Can you guess the " << BCGame.GetHiddenWordLength();
 	std::cout << " letter isogram I'm thinking of?" << std::endl;
 }
 
@@ -48,8 +44,9 @@ void PlayGame()
 	{
 		FText Guess = GetGuess();
 		// UNDONE make loop checking valid
-		// UNDONE submit valid guess to the game
-		 PrintGuess(Guess);
+
+		FBullCowCount BullCowCount = BCGame.SubmitGuess(Guess);
+		PrintResult(BullCowCount);
 		
 	}
 	// TODO add a game summary
@@ -67,9 +64,9 @@ FText GetGuess()
 }
 
 // Repeat the guess back to the player
-void PrintGuess(FText Guess)
+void PrintResult(FBullCowCount Count)
 {
-	std::cout << "Your guess was: " << Guess << std::endl;
+	std::cout << "Bulls: " << Count.Bulls << std::endl << "Cows: " << Count.Cows << std::endl;
 }
 
 bool AskToPlayAgain()

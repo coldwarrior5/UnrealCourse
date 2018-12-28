@@ -1,0 +1,17 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build Bulls and Cows game",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-g", "-std=c++11",  "main.cpp", "FBullCowGame.cpp", "-o", "a.out"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}

@@ -1,27 +1,30 @@
 #include "pch.h"
 #include "FBullCowGame.h"
+#include <map>
+#include <vector>
+#include <ctime>
+// ReSharper disable once CppInconsistentNaming
+#define TMap std::map
+#define TArray std::vector
 
+// To make Unreal friendly
 using int32 = int;
 
-FBullCowGame::FBullCowGame() { Reset(); }
-
-int32 FBullCowGame::GetMaxTries() const { return MaxTries; }
 int32 FBullCowGame::GetCurrentTry() const {	return CurrentTry; }
 int32 FBullCowGame::GetHiddenWordLength() const { return MyHiddenWord.length(); }
+bool FBullCowGame::IsGameWon() const { return bGameIsWon; }
 
-bool FBullCowGame::IsGameWon() const
+int32 FBullCowGame::GetMaxTries() const
 {
-	return false;
+	return WordLengthMaxTries.at(GetHiddenWordLength());
 }
+
 
 void FBullCowGame::Reset()
 {
-	const FString HIDDEN_WORD = "plant";
-	constexpr int32 MAX_TRIES = 8;
-
-	MaxTries = MAX_TRIES;
-	MyHiddenWord = HIDDEN_WORD;
+	MyHiddenWord = PickNextWord();
 	CurrentTry = 1;
+	bGameIsWon = false;
 }
 
 EGuessStatus FBullCowGame::CheckGuessValidity(FString Guess) const
@@ -36,46 +39,68 @@ EGuessStatus FBullCowGame::CheckGuessValidity(FString Guess) const
 		return EGuessStatus::OK;
 }
 
-FBullCowCount FBullCowGame::SubmitGuess(FString Guess)
+FBullCowCount FBullCowGame::SubmitValidGuess(FString Guess)
 {
 	CurrentTry++;
 	FBullCowCount BullCowCount;
-	const int32 HiddenWordLength = MyHiddenWord.length();
-	for (int32 i = 0; i < HiddenWordLength; i++)
+	const int32 WordLength = MyHiddenWord.length(); // Assuming same length as guess
+	for (int32 GuessIter = 0; GuessIter < WordLength; GuessIter++)
 	{
-		for (int32 j = 0; j < HiddenWordLength; j++)
+		for (int32 HiddenWIter = 0; HiddenWIter < WordLength; HiddenWIter++)
 		{
-			if(Guess[i] == MyHiddenWord[j])
+			if(Guess[GuessIter] == MyHiddenWord[HiddenWIter])
 			{
-				if (i == j)
+				if (GuessIter == HiddenWIter)
 					BullCowCount.Bulls++;
 				else
 					BullCowCount.Cows++;
 			}
 		}
 	}
+	if (BullCowCount.Bulls == WordLength)
+		bGameIsWon = true;
 
 	return BullCowCount;
 }
 
-bool FBullCowGame::IsAnIsogram(FString Guess) const
+// ReSharper disable once CppMemberFunctionMayBeStatic
+bool FBullCowGame::IsAnIsogramSlower(FString Word) const
 {
-	for (int i = 0; i < Guess.length(); i++)
+	for (int32 i = 0; i < int32(Word.length()); i++)
 	{
-		for (int j = i + 1; j < Guess.length(); j++)
+		for (int32 j = i + 1; j < int32(Word.length()); j++)
 		{
-			if (Guess[i] == Guess[j])
+			if (Word[i] == Word[j])
 				return false;
 		}
 	}
 	return true;
 }
 
-bool FBullCowGame::IsLowercase(FString Guess) const
+// ReSharper disable once CppMemberFunctionMayBeStatic
+bool FBullCowGame::IsAnIsogram(FString Word) const
 {
-	for (int i = 0; i < Guess.length(); i++)
+	if (Word.length() <= 1)
+		return true;
+
+	TMap<char, bool> LetterSeen;
+
+	for (auto Letter : Word)	// For all letters of the word
 	{
-		if (isupper(Guess[i]))
+		Letter = tolower(Letter);	// Handle mixed case
+		if (LetterSeen[Letter])
+			return false;
+		LetterSeen[Letter] = true;
+	}
+	return true;
+}
+
+// ReSharper disable once CppMemberFunctionMayBeStatic
+bool FBullCowGame::IsLowercase(FString Word) const
+{
+	for (auto C : Word)
+	{
+		if (isupper(C))
 			return false;
 	}
 	return true;
@@ -83,5 +108,12 @@ bool FBullCowGame::IsLowercase(FString Guess) const
 
 bool FBullCowGame::IsSameLength(FString Guess) const
 {
-	return Guess.length() == MyHiddenWord.length();
+	return int32(Guess.length()) == GetHiddenWordLength();
+}
+
+FString FBullCowGame::PickNextWord() const
+{
+	srand(time(nullptr));
+	const int RandomChoice = rand() % IsogramDictionary.size();
+	return IsogramDictionary.at(RandomChoice);
 }

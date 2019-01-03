@@ -2,6 +2,8 @@
 
 #include "MoveDoor.h"
 #include "GameFramework/Actor.h"
+#include "Engine/World.h"
+#include "GameFramework/PlayerController.h"
 
 // Sets default values for this component's properties
 UMoveDoor::UMoveDoor()
@@ -13,17 +15,12 @@ UMoveDoor::UMoveDoor()
 	// ...
 }
 
-
 // Called when the game starts
 void UMoveDoor::BeginPlay()
 {
 	Super::BeginPlay();
-
-	auto Owner = GetOwner();
-	const auto NewRotation = FRotator(0.0f, 70.0f, 0.0f);
-	Owner->SetActorRotation(NewRotation);
-
-	
+	OwningDoor = GetOwner();
+	ActorThatOpens = GetWorld()->GetFirstPlayerController()->GetPawn();
 }
 
 
@@ -32,6 +29,26 @@ void UMoveDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	// ...
+	// Poll the Trigger Volume
+	if(PressurePlate->IsOverlappingActor(ActorThatOpens))
+	{
+		OpenDoor();
+		LastDoorOpenTime = GetWorld()->GetTimeSeconds();
+	}
+
+	// Check if it is time to close the door
+
+	if (GetWorld()->GetTimeSeconds() - LastDoorOpenTime > DoorCloseDelay)
+		CloseDoor();
+	
 }
 
+void UMoveDoor::OpenDoor() const
+{
+	OwningDoor->SetActorRotation(FRotator(0.0f, OpenAngle, 0.0f));
+}
+
+void UMoveDoor::CloseDoor() const
+{
+	OwningDoor->SetActorRotation(FRotator(0.0f, ClosedAngle, 0.0f));
+}

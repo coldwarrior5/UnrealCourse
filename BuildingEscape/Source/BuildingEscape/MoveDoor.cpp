@@ -20,9 +20,7 @@ void UMoveDoor::BeginPlay()
 {
 	Super::BeginPlay();
 	OwningDoor = GetOwner();
-	ActorThatOpens = GetWorld()->GetFirstPlayerController()->GetPawn();
 }
-
 
 // Called every frame
 void UMoveDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -30,7 +28,7 @@ void UMoveDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// Poll the Trigger Volume
-	if(PressurePlate->IsOverlappingActor(ActorThatOpens))
+	if(GetTotalMassOfActorsOnPressurePlate() > TriggerMass)
 	{
 		OpenDoor();
 		LastDoorOpenTime = GetWorld()->GetTimeSeconds();
@@ -51,4 +49,17 @@ void UMoveDoor::OpenDoor() const
 void UMoveDoor::CloseDoor() const
 {
 	OwningDoor->SetActorRotation(FRotator(0.0f, ClosedAngle, 0.0f));
+}
+
+float UMoveDoor::GetTotalMassOfActorsOnPressurePlate()
+{
+	float TotalMass = 0.0f;
+
+	TArray<AActor*> OverlappingActors;
+
+	// Find all the overlapping actors
+	PressurePlate->GetOverlappingActors(OverlappingActors);
+
+
+	return TotalMass;
 }

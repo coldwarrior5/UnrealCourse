@@ -23,7 +23,8 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-public:	
+public:
+	float GetTotalMassOfActorsOnPressurePlate();
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
@@ -38,6 +39,6 @@ private:
 	UPROPERTY(EditAnywhere)
 		float DoorCloseDelay = 0.5f;
 	float LastDoorOpenTime;
-	UPROPERTY(VisibleAnywhere)
-		AActor* ActorThatOpens{};
+	UPROPERTY(EditAnywhere)
+		float TriggerMass = 50.0f;
 };

@@ -1,5 +1,4 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -7,7 +6,6 @@
 #include "PhysicsEngine/PhysicsHandleComponent.h"
 #include "Components/InputComponent.h"
 #include "Grabber.generated.h"
-
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BUILDINGESCAPE_API UGrabber : public UActorComponent
@@ -18,7 +16,6 @@ public:
 	// Sets default values for this component's properties
 	UGrabber();
 	
-
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -44,5 +41,7 @@ private:
 	void Release();
 	// Return hit for first physics body in reach
 	FHitResult GetFirstPhysicsBodyInReach() const;
-
+	FVector GetLineTraceStart() const;
+	// Calculate the Reach vector using HandReach variable and viewport location and rotation
+	FVector GetLineTraceEnd() const;
 };

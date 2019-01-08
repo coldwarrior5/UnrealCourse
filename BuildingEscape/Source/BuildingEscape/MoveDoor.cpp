@@ -3,6 +3,7 @@
 #include "MoveDoor.h"
 #include "GameFramework/Actor.h"
 #include "Engine/World.h"
+#include "Components/PrimitiveComponent.h"
 #include "GameFramework/PlayerController.h"
 
 // Sets default values for this component's properties
@@ -20,6 +21,11 @@ void UMoveDoor::BeginPlay()
 {
 	Super::BeginPlay();
 	OwningDoor = GetOwner();
+
+	if (!PressurePlate)
+	{
+		UE_LOG(LogTemp, Error, TEXT("%s is missing pressure plate component"), *OwningDoor->GetName())
+	}
 }
 
 // Called every frame
@@ -57,9 +63,15 @@ float UMoveDoor::GetTotalMassOfActorsOnPressurePlate()
 
 	TArray<AActor*> OverlappingActors;
 
+	if (!PressurePlate) { return TotalMass; }
 	// Find all the overlapping actors
 	PressurePlate->GetOverlappingActors(OverlappingActors);
 
+	for(const auto* Actor : OverlappingActors)
+	{
+		//UE_LOG(LogTemp, Warning, TEXT("Actor %s standing on a pressure plate"), *Actor->GetName());
+		TotalMass += Actor->FindComponentByClass<UPrimitiveComponent>()->GetMass();			// Mass is set in primitive component
+	}
 
 	return TotalMass;
 }

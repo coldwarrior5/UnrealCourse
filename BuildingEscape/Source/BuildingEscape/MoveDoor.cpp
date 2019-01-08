@@ -36,25 +36,13 @@ void UMoveDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 	// Poll the Trigger Volume
 	if(GetTotalMassOfActorsOnPressurePlate() > TriggerMass)
 	{
-		OpenDoor();
-		LastDoorOpenTime = GetWorld()->GetTimeSeconds();
+		OnOpen.Broadcast();
 	}
+	else
+	{
+		OnClose.Broadcast();
 
-	// Check if it is time to close the door
-
-	if (GetWorld()->GetTimeSeconds() - LastDoorOpenTime > DoorCloseDelay)
-		CloseDoor();
-	
-}
-
-void UMoveDoor::OpenDoor() const
-{
-	OwningDoor->SetActorRotation(FRotator(0.0f, OpenAngle, 0.0f));
-}
-
-void UMoveDoor::CloseDoor() const
-{
-	OwningDoor->SetActorRotation(FRotator(0.0f, ClosedAngle, 0.0f));
+	}
 }
 
 float UMoveDoor::GetTotalMassOfActorsOnPressurePlate()

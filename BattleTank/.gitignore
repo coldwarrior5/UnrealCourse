@@ -402,3 +402,6 @@ DerivedDataCache/*
 *.swp
 *.swo
 .ctrlp_cache/
+
+### Ignore Starter Content Pack
+Content/StarterContent/*

@@ -34,11 +34,13 @@ void ATankPlayerController::AimAtReticle() const
 	if(!ControlledTank){ return; }
 
 	FVector HitLocation; // Out parameter
-	bool bHit = FindSightRayHitLocation(HitLocation);
-	if (!bHit) { return; }
+	if(FindSightRayHitLocation(HitLocation))
+	{
+		GetControlledTank()->AimAt(HitLocation);
+	}
 }
 
-// Get world location of linetrace through reticle
+// Get world location of line-trace through reticle
 // Returns true if it hits landscape
 
 bool ATankPlayerController::FindSightRayHitLocation(FVector& OutHitLocation) const
@@ -80,15 +82,11 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVec
 	))
 	{
 		OutHitLocation = HitResult.Location;
-		UE_LOG(LogTemp, Warning, TEXT("THitLocation: %s"), *OutHitLocation.ToString());
-
 		return true;
 	}
 	else
 	{
 		OutHitLocation = FVector(0);
-		UE_LOG(LogTemp, Warning, TEXT("THitLocation: %s"), *OutHitLocation.ToString());
-
 		return false;
 	}
 }

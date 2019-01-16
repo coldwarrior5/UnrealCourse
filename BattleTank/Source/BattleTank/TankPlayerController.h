@@ -16,9 +16,19 @@ class BATTLETANK_API ATankPlayerController : public APlayerController
 public:
 	GENERATED_BODY()
 
-public:
-	ATank* GetControlledTank() const;
-	void BeginPlay() override;
+	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaSeconds) override;
+	UPROPERTY(BlueprintReadWrite)
+		float ReticleXLocation = 0.5;
+	UPROPERTY(BlueprintReadWrite)
+		float ReticleYLocation = 0.3;
+	UPROPERTY(BlueprintReadWrite)
+		float TankShotRange = 700000;
 private:
-	
+	ATank* GetControlledTank() const;
+	void AimAtReticle() const;
+	FVector2D GetReticleScreenLocation() const;
+	bool GetLookVectorHitLocation(FVector LookDirection, FVector& OutHitLocation) const;
+	bool FindSightRayHitLocation(FVector& OutHitLocation) const;
+	bool GetLookDirection(FVector2D ScreenLocation, FVector& LookDirection) const;
 };

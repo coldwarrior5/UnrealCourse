@@ -28,6 +28,9 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed) const
 		StartLocation,
 		HitLocation,
 		LaunchSpeed,
+		false,
+		0,
+		0,
 		ESuggestProjVelocityTraceOption::DoNotTrace
 	);
 	if( bHaveAimSolution )
@@ -49,8 +52,7 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection) const
 	auto AimAsRotator = AimDirection.Rotation();
 	auto RotationDifference = AimAsRotator - BarrelRotator;
 
-	Barrel->Elevate(RotationDifference.Yaw);
-
+	Barrel->Elevate(RotationDifference.Pitch);
 }
 
 

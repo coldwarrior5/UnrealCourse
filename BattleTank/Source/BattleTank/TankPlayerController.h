@@ -21,7 +21,7 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 		float ReticleYLocation = 0.3;
 	UPROPERTY(BlueprintReadWrite)
-		float TankShotRange = 700000;
+		float TankShotRange = 100000;
 private:
 	ATank* GetControlledTank() const;
 	void AimAtReticle() const;

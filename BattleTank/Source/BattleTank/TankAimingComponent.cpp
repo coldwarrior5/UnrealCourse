@@ -33,11 +33,24 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed) const
 		0,
 		ESuggestProjVelocityTraceOption::DoNotTrace
 	);
-	if( bHaveAimSolution )
+	if (bHaveAimSolution)
 	{
 		const auto AimDirection = OutLaunchVelocity.GetSafeNormal();
 		AdjustTankForShot(AimDirection);
 	}
+	else
+	{
+		RotateAt(HitLocation);
+	}
+}
+
+void UTankAimingComponent::RotateAt(FVector HitLocation) const
+{
+	const auto StartLocation = Barrel->GetSocketLocation(FName(TEXT("ProjectileSocket")));
+	auto AimDirection = (HitLocation - StartLocation);
+	AimDirection.Z = 0;
+	AimDirection.Normalize();
+	AdjustTankForShot(AimDirection);
 }
 
 void UTankAimingComponent::SetBarrelReference(UTankBarrel* BarrelToSet)

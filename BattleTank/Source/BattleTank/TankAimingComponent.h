@@ -21,10 +21,10 @@ public:
 	UTankAimingComponent();
 	// Called every frame
 	void AimAt(FVector HitLocation, float LaunchSpeed) const;
+	void RotateAt(FVector HitLocation) const;
 	void SetBarrelReference(UTankBarrel* BarrelToSet);
 	void SetTurretReference(UTankTurret* TurretToSet);
 
-	// TODO Add SetTurretReference
 private:
 	UTankBarrel* Barrel = nullptr;
 	UTankTurret* Turret = nullptr;

@@ -18,7 +18,7 @@ public:
 
 private:
 	UPROPERTY(EditAnywhere, Category = Setup)
-	float MaxBarrelSpeedPerSecond = 5;	// Sensible default value of 5 deg/s
+	float MaxBarrelSpeedPerSecond = 8;	// Sensible default value of 5 deg/s
 	UPROPERTY(EditAnywhere, Category = Setup)
 	float MinElevationInDegrees = 0;
 	UPROPERTY(EditAnywhere, Category = Setup)

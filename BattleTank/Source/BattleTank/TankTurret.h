@@ -20,5 +20,5 @@ public:
 
 private:
 	UPROPERTY(EditAnywhere, Category = Setup)
-		float MaxTurretSpeedPerSecond = 10;	// Sensible default value of 10 deg/s
+		float MaxTurretSpeedPerSecond = 16;	// Sensible default value of 16 deg/s
 };

@@ -39,6 +39,10 @@ void ATankPlayerController::AimAtReticle() const
 	{
 		GetControlledTank()->AimAt(HitLocation);
 	}
+	else
+	{
+		GetControlledTank()->RotateAt(HitLocation);
+	}
 }
 
 // Get world location of line-trace through reticle
@@ -87,7 +91,7 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVec
 	}
 	else
 	{
-		OutHitLocation = FVector(0);
+		OutHitLocation = RangeEndLocation;
 		return false;
 	}
 }

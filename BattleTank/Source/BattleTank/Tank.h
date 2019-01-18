@@ -17,6 +17,7 @@ class BATTLETANK_API ATank : public APawn
 
 public:
 	void AimAt(FVector HitLocation) const;
+	void RotateAt(FVector HitLocation) const;
 	UFUNCTION(BlueprintCallable, Category = Setup)
 	void SetBarrelReference(UTankBarrel* BarrelToSet) const;
 	UFUNCTION(BlueprintCallable, Category = Setup)
@@ -34,5 +35,5 @@ private:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UPROPERTY(EditAnywhere, Category = Firing)
-		float LaunchSpeed = 10000;	// TODO Find sensible starting value
+		float LaunchSpeed = 4000;
 };

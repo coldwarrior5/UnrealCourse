@@ -13,9 +13,6 @@ void ATankPlayerController::BeginPlay()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("The tank pawn is not attached to the player controller"));
 	}
-	else
-		UE_LOG(LogTemp, Warning, TEXT("Tank pawn found: %s"), *ControlledTank->GetName());
-
 }
 
 void ATankPlayerController::Tick(float DeltaSeconds)

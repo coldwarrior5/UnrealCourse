@@ -2,6 +2,10 @@
 
 #include "Tank.h"
 #include "TankAimingComponent.h"
+#include "Engine/World.h"
+#include "TankBarrel.h"
+#include "Projectile.h"
+
 // Sets default values
 ATank::ATank()
 {
@@ -9,7 +13,7 @@ ATank::ATank()
 	PrimaryActorTick.bCanEverTick = false;
 
 	// No need to protect pointers added at construction
-	TankAimingComponent = CreateDefaultSubobject<UTankAimingComponent>(FName("Aiming Component"));
+	TankAimingComponent = CreateDefaultSubobject<UTankAimingComponent>(FName(TEXT("Aiming Component")));
 }
 
 // Called when the game starts or when spawned
@@ -34,12 +38,31 @@ void ATank::RotateAt(FVector HitLocation) const
 	TankAimingComponent->RotateAt(HitLocation);
 }
 
-void ATank::SetBarrelReference(UTankBarrel * BarrelToSet) const
+void ATank::SetBarrelReference(UTankBarrel * BarrelToSet)
 {
 	TankAimingComponent->SetBarrelReference(BarrelToSet);
+	Barrel = BarrelToSet;
 }
 
 void ATank::SetTurretReference(UTankTurret* TurretToSet) const
 {
 	TankAimingComponent->SetTurretReference(TurretToSet);
+}
+
+void ATank::Fire()
+{
+	if (!Barrel) { return; }
+	if (!ProjectileBlueprint)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Tanks are not assigned projectile blueprint!"));
+		return;
+	}
+	
+	// Spawn a projectile at the socket location of the barrel
+	auto Projectile = GetWorld()->SpawnActor<AProjectile>(
+		ProjectileBlueprint,
+		Barrel->GetSocketLocation(FName(TEXT("ProjectileSocket"))),
+		Barrel->GetSocketRotation(FName(TEXT("ProjectileSocket")))
+		);
+	Projectile->LaunchProjectile(LaunchSpeed);
 }

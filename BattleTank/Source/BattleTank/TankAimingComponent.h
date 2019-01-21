@@ -20,8 +20,9 @@ public:
 	// Sets default values for this component's properties
 	UTankAimingComponent();
 	// Called every frame
-	void AimAt(FVector HitLocation, float LaunchSpeed) const;
+	void AimAt(FVector HitLocation) const;
 	void RotateAt(FVector HitLocation) const;
+	void Fire() const;
 	void SetBarrelReference(UTankBarrel* BarrelToSet);
 	void SetTurretReference(UTankTurret* TurretToSet);
 

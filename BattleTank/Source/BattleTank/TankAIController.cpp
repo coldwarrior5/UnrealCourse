@@ -23,17 +23,13 @@ void ATankAIController::Tick(float DeltaSeconds)
 
 void ATankAIController::AimAtPlayer() const
 {
-	const auto ControlledTank = GetControlledTank();
+	const auto ControlledTank = Cast<ATank>(GetPawn());
 	const auto PlayerTank = GetPlayerTank();
 	if(ControlledTank && PlayerTank)
 	{
 		ControlledTank->AimAt(PlayerTank->GetActorLocation());
+		ControlledTank->Fire();
 	}
-}
-
-ATank* ATankAIController::GetControlledTank() const
-{
-	return Cast<ATank>(GetPawn());
 }
 
 ATank* ATankAIController::GetPlayerTank() const

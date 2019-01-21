@@ -4,7 +4,6 @@
 #include "TankAimingComponent.h"
 #include "Engine/World.h"
 #include "TankBarrel.h"
-#include "Projectile.h"
 
 // Sets default values
 ATank::ATank()
@@ -30,7 +29,7 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void ATank::AimAt(FVector HitLocation) const
 {
-	TankAimingComponent->AimAt(HitLocation, LaunchSpeed);
+	TankAimingComponent->AimAt(HitLocation);
 }
 
 void ATank::RotateAt(FVector HitLocation) const
@@ -49,20 +48,7 @@ void ATank::SetTurretReference(UTankTurret* TurretToSet) const
 	TankAimingComponent->SetTurretReference(TurretToSet);
 }
 
-void ATank::Fire()
+void ATank::Fire() const
 {
-	if (!Barrel) { return; }
-	if (!ProjectileBlueprint)
-	{
-		UE_LOG(LogTemp, Error, TEXT("Tanks are not assigned projectile blueprint!"));
-		return;
-	}
-	
-	// Spawn a projectile at the socket location of the barrel
-	auto Projectile = GetWorld()->SpawnActor<AProjectile>(
-		ProjectileBlueprint,
-		Barrel->GetSocketLocation(FName(TEXT("ProjectileSocket"))),
-		Barrel->GetSocketRotation(FName(TEXT("ProjectileSocket")))
-		);
-	Projectile->LaunchProjectile(LaunchSpeed);
+	TankAimingComponent->Fire();
 }

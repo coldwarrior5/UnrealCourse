@@ -15,14 +15,16 @@ UTankAimingComponent::UTankAimingComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 }
 
-void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed) const
+
+void UTankAimingComponent::AimAt(FVector HitLocation) const
 {
 	if (!Barrel) { return; }
 	FVector OutLaunchVelocity(0);
-	FVector StartLocation = Barrel->GetSocketLocation(FName(TEXT("ProjectileSocket")));
+	const auto StartLocation = Barrel->GetSocketLocation(FName(TEXT("ProjectileSocket")));
+	const auto LaunchSpeed = Barrel->GetProjectileSpeed();
 
 	// Calculate the out launch velocity
-	bool bHaveAimSolution = UGameplayStatics::SuggestProjectileVelocity(
+	const auto bHaveAimSolution = UGameplayStatics::SuggestProjectileVelocity(
 		this,
 		OutLaunchVelocity,
 		StartLocation,
@@ -46,11 +48,18 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed) const
 
 void UTankAimingComponent::RotateAt(FVector HitLocation) const
 {
+	if (!Barrel) { return; }
 	const auto StartLocation = Barrel->GetSocketLocation(FName(TEXT("ProjectileSocket")));
 	auto AimDirection = (HitLocation - StartLocation);
 	AimDirection.Z = 0;
 	AimDirection.Normalize();
 	AdjustTankForShot(AimDirection);
+}
+
+void UTankAimingComponent::Fire() const
+{
+	if (!Barrel) { return; }
+	Barrel->Fire();
 }
 
 void UTankAimingComponent::SetBarrelReference(UTankBarrel* BarrelToSet)
@@ -65,14 +74,13 @@ void UTankAimingComponent::SetTurretReference(UTankTurret* TurretToSet)
 
 void UTankAimingComponent::AdjustTankForShot(FVector AimDirection) const
 {
+	if (!Barrel) { return; }
 	// Work out difference between current barrel rotation, and AimDirection
-	auto BarrelRotator = Barrel->GetForwardVector().Rotation();
-	auto AimAsRotator = AimDirection.Rotation();
+	const auto BarrelRotator = Barrel->GetForwardVector().Rotation();
+	const auto AimAsRotator = AimDirection.Rotation();
 	auto RotationDifference = AimAsRotator - BarrelRotator;
 	RotationDifference.Normalize();
 
 	Barrel->Elevate(RotationDifference.Pitch);
 	Turret->Rotate(RotationDifference.Yaw);
 }
-
-

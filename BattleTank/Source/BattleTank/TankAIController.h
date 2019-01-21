@@ -19,6 +19,5 @@ public:
 	void AimAtPlayer() const;
 
 private:
-	ATank* GetControlledTank() const;
 	ATank* GetPlayerTank() const;
 };

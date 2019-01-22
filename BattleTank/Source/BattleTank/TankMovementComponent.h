@@ -23,6 +23,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Input)
 	void IntendMoveToTheSide(float Throw) const;
 
+	// Overriding this method so that the AI players are constrained to the same behaviour as the players are
+	void RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed) override;
+
+
 private:
 	UTankTrack* LeftTrack = nullptr;
 	UTankTrack* RightTrack = nullptr;

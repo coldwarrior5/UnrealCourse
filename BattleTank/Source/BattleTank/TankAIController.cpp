@@ -17,7 +17,8 @@ void ATankAIController::Tick(float DeltaSeconds)
 	const auto PlayerTank = GetPlayerTank();
 	if(ControlledTank && PlayerTank)
 	{
-		// TODO Move towards the player
+		// Move towards the player
+		MoveToActor(PlayerTank, AcceptanceRadius);
 		ControlledTank->AimAt(PlayerTank->GetActorLocation());
 		ControlledTank->Fire();
 	}

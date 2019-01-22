@@ -7,6 +7,7 @@
 #include "Tank.generated.h"
 
 class UTankAimingComponent;
+class UTankMovementComponent;
 class UTankBarrel;
 class UTankTurret;
 
@@ -27,6 +28,11 @@ public:
 
 protected:
 	UTankAimingComponent* TankAimingComponent = nullptr;
+	/*
+	 *UPROPERTY(BlueprintReadOnly)	// Also possible to define movement component like this
+	 *UTankMovementComponent* TankMovementComponent = nullptr;
+	 */
+
 
 private:
 	// Sets default values for this pawn's properties
@@ -35,7 +41,6 @@ private:
 	virtual void BeginPlay() override;
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
 
 	// Local barrel reference for spawning projectiles
 	UTankBarrel* Barrel;

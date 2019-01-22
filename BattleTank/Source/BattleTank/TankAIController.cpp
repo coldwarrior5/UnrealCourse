@@ -13,20 +13,11 @@ void ATankAIController::BeginPlay()
 void ATankAIController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
-	if(GetPlayerTank())
-	{
-		// TODO Move towards the player
-		AimAtPlayer();
-		// TODO Fire if ready
-	}
-}
-
-void ATankAIController::AimAtPlayer() const
-{
 	const auto ControlledTank = Cast<ATank>(GetPawn());
 	const auto PlayerTank = GetPlayerTank();
 	if(ControlledTank && PlayerTank)
 	{
+		// TODO Move towards the player
 		ControlledTank->AimAt(PlayerTank->GetActorLocation());
 		ControlledTank->Fire();
 	}

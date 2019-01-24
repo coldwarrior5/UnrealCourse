@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #include "TankAIController.h"
 #include "Engine/World.h"
 #include "GameFramework/PlayerController.h"
@@ -17,10 +15,9 @@ void ATankAIController::Tick(float DeltaSeconds)
 	const auto PlayerTank = GetPlayerTank();
 	if(ControlledTank && PlayerTank)
 	{
-		// Move towards the player
 		MoveToActor(PlayerTank, AcceptanceRadius);
 		ControlledTank->AimAt(PlayerTank->GetActorLocation());
-		ControlledTank->Fire();
+		//ControlledTank->Fire();
 	}
 }
 

@@ -18,7 +18,7 @@ void UTankMovementComponent::IntendMoveForward(float Throw) const
 }
 
 // +1 makes the tank move to the right, whereas -1 makes it move to the left
-void UTankMovementComponent::IntendMoveToTheSide(float Throw) const
+void UTankMovementComponent::IntendMoveRight(float Throw) const
 {
 	if (!LeftTrack || !RightTrack) { return; }
 	RightTrack->SetThrottle(-Throw);
@@ -28,6 +28,14 @@ void UTankMovementComponent::IntendMoveToTheSide(float Throw) const
 void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed)
 {
 	// No need to call super as we are replacing the functionality
-	const auto TankName = GetOwner()->GetName();
-	UE_LOG(LogTemp, Warning, TEXT("Tank %s: MoveVelocity: %s"), *TankName, *MoveVelocity.ToString());
+	const auto AIMoveDirection = MoveVelocity.GetSafeNormal();
+	const auto TankForward = GetOwner()->GetActorForwardVector();
+
+	const auto ForwardResult = FVector::DotProduct(TankForward, AIMoveDirection);
+	IntendMoveForward(ForwardResult);
+
+	//auto TankRight = GetOwner()->GetActorRightVector();
+	//const auto RightResult = FVector::DotProduct(TankRight, AIMoveDirection);
+	const auto RightResult = FVector::CrossProduct(TankForward, AIMoveDirection).Z;
+	IntendMoveRight(RightResult);
 }

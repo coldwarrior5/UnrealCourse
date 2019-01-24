@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -21,13 +19,13 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Input)
 	void IntendMoveForward(float Throw) const;
 	UFUNCTION(BlueprintCallable, Category = Input)
-	void IntendMoveToTheSide(float Throw) const;
-
-	// Overriding this method so that the AI players are constrained to the same behaviour as the players are
-	void RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed) override;
-
+	void IntendMoveRight(float Throw) const;
 
 private:
+	// Overriding this method so that the AI players are constrained to the same behaviour as the players are
+	// Called from the path-finding logic by the AI controllers
+	void RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed) override;
+
 	UTankTrack* LeftTrack = nullptr;
 	UTankTrack* RightTrack = nullptr;
 };

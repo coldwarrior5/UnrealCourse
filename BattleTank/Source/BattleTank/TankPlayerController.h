@@ -22,8 +22,11 @@ public:
 		float ReticleYLocation = 0.3;
 	UPROPERTY(BlueprintReadWrite)
 		float TankShotRange = 100000;
-private:
+protected:
+	UFUNCTION(BlueprintCallable, Category = "Setup")
 	ATank* GetControlledTank() const;
+
+private:
 	void AimAtReticle() const;
 	FVector2D GetReticleScreenLocation() const;
 	bool GetLookVectorHitLocation(FVector LookDirection, FVector& OutHitLocation) const;

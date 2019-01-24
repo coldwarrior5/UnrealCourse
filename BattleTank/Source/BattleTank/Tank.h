@@ -27,6 +27,7 @@ public:
 	void Fire() const;
 
 protected:
+	UPROPERTY(BlueprintReadOnly)
 	UTankAimingComponent* TankAimingComponent = nullptr;
 	/*
 	 *UPROPERTY(BlueprintReadOnly)	// Also possible to define movement component like this

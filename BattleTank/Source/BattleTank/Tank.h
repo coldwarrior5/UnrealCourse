@@ -19,30 +19,13 @@ class BATTLETANK_API ATank : public APawn
 public:
 	void AimAt(FVector HitLocation) const;
 	void RotateAt(FVector HitLocation) const;
-	UFUNCTION(BlueprintCallable, Category = Setup)
-	void SetBarrelReference(UTankBarrel* BarrelToSet);
-	UFUNCTION(BlueprintCallable, Category = Setup)
-	void SetTurretReference(UTankTurret* TurretToSet) const;
-	UFUNCTION(BlueprintCallable, Category = Setup)
-	void Fire() const;
-
+	UFUNCTION(BlueprintCallable, Category = "Setup")
+		void Fire() const;
 protected:
 	UPROPERTY(BlueprintReadOnly)
-	UTankAimingComponent* TankAimingComponent = nullptr;
-	/*
-	 *UPROPERTY(BlueprintReadOnly)	// Also possible to define movement component like this
-	 *UTankMovementComponent* TankMovementComponent = nullptr;
-	 */
-
+		UTankAimingComponent* TankAimingComponent = nullptr;
 
 private:
 	// Sets default values for this pawn's properties
 	ATank();
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
-	// Local barrel reference for spawning projectiles
-	UTankBarrel* Barrel;
 };

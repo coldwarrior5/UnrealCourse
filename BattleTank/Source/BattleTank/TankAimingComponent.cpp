@@ -15,6 +15,13 @@ UTankAimingComponent::UTankAimingComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 }
 
+// Sets default values for this component's properties
+void UTankAimingComponent::Initialise(UTankTurret* TurretToSet, UTankBarrel* BarrelToSet)
+{
+	Turret = TurretToSet;
+	Barrel = BarrelToSet;
+}
+
 
 void UTankAimingComponent::AimAt(FVector HitLocation)
 {
@@ -62,19 +69,9 @@ void UTankAimingComponent::Fire()
 	Barrel->Fire();
 }
 
-void UTankAimingComponent::SetBarrelReference(UTankBarrel* BarrelToSet)
-{
-	Barrel = BarrelToSet;
-}
-
-void UTankAimingComponent::SetTurretReference(UTankTurret* TurretToSet)
-{
-	Turret = TurretToSet;
-}
-
 void UTankAimingComponent::AdjustTurretForShot(FVector AimDirection)
 {
-	if (!Barrel) { return; }
+	if (!Barrel || !Turret) { return; }
 	FiringStatus = EFiringStatus::Aiming;
 	// Work out difference between current barrel rotation, and AimDirection
 	const auto BarrelRotator = Barrel->GetForwardVector().Rotation();

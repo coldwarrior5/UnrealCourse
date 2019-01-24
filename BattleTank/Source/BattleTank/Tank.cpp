@@ -14,15 +14,18 @@ ATank::ATank()
 }
 void ATank::AimAt(FVector HitLocation) const
 {
+	if (!TankAimingComponent) { return; }
 	TankAimingComponent->AimAt(HitLocation);
 }
 
 void ATank::RotateAt(FVector HitLocation) const
 {
+	if (!TankAimingComponent) { return; }
 	TankAimingComponent->RotateAt(HitLocation);
 }
 
 void ATank::Fire() const
 {
+	if (!TankAimingComponent) { return; }
 	TankAimingComponent->Fire();
 }

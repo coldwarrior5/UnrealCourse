@@ -12,7 +12,7 @@ void UTankMovementComponent::Initialise(UTankTrack* LeftTrackToSet, UTankTrack* 
 // +1 makes the take move forwards, whereas -1 makes it move backwards
 void UTankMovementComponent::IntendMoveForward(float Throw) const
 {
-	if (!LeftTrack || !RightTrack) { return; }
+	if (!ensure(LeftTrack && RightTrack)) { return; }
 	RightTrack->SetThrottle(Throw);
 	LeftTrack->SetThrottle(Throw);
 }
@@ -20,7 +20,7 @@ void UTankMovementComponent::IntendMoveForward(float Throw) const
 // +1 makes the tank move to the right, whereas -1 makes it move to the left
 void UTankMovementComponent::IntendMoveRight(float Throw) const
 {
-	if (!LeftTrack || !RightTrack) { return; }
+	if (!ensure(LeftTrack && RightTrack)) { return; }
 	RightTrack->SetThrottle(-Throw);
 	LeftTrack->SetThrottle(Throw);
 }

@@ -13,7 +13,7 @@ void ATankAIController::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 	const auto ControlledTank = Cast<ATank>(GetPawn());
 	const auto PlayerTank = GetPlayerTank();
-	if(ControlledTank && PlayerTank)
+	if(ensure(ControlledTank && PlayerTank))
 	{
 		MoveToActor(PlayerTank, AcceptanceRadius);
 		ControlledTank->AimAt(PlayerTank->GetActorLocation());
@@ -25,7 +25,7 @@ ATank* ATankAIController::GetPlayerTank() const
 {
 	const auto PlayerController = GetWorld()->GetFirstPlayerController();
 	
-	if(PlayerController)
+	if(ensure(PlayerController))
 	{
 		APawn* Pawn = PlayerController->GetPawn();
 		if(Pawn)

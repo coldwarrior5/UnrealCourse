@@ -10,13 +10,13 @@ void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 	const auto ControlledTank = GetControlledTank();
-	if(!ControlledTank)
+	if(!ensure(ControlledTank))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("The tank pawn is not attached to the player controller"));
 		return;
 	}
 	const auto AimingComponent = ControlledTank->FindComponentByClass<UTankAimingComponent>();
-	if(!AimingComponent)
+	if(!ensure(AimingComponent))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Player controller doesn't have a reference to Aiming Component"));
 	}
@@ -40,7 +40,7 @@ ATank* ATankPlayerController::GetControlledTank() const
 void ATankPlayerController::AimAtReticle() const
 {
 	const auto ControlledTank = GetControlledTank();
-	if(!ControlledTank){ return; }
+	if(!ensure(ControlledTank)){ return; }
 
 	FVector HitLocation; // Out parameter
 	if(FindSightRayHitLocation(HitLocation))

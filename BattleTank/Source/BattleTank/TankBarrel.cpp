@@ -19,7 +19,7 @@ void UTankBarrel::Elevate(float RelativeSpeed)
 
 void UTankBarrel::Fire()
 {
-	if (!ProjectileBlueprint)
+	if (!ensure(ProjectileBlueprint))
 	{
 		UE_LOG(LogTemp, Error, TEXT("Tanks are not assigned projectile blueprint!"));
 		return;

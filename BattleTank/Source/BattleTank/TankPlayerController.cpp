@@ -4,6 +4,7 @@
 #include "CollisionQueryParams.h"
 #include "Engine/World.h"
 #include "Tank.h"
+#include "TankAimingComponent.h"
 
 void ATankPlayerController::BeginPlay()
 {
@@ -12,6 +13,16 @@ void ATankPlayerController::BeginPlay()
 	if(!ControlledTank)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("The tank pawn is not attached to the player controller"));
+		return;
+	}
+	const auto AimingComponent = ControlledTank->FindComponentByClass<UTankAimingComponent>();
+	if(!AimingComponent)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Player controller doesn't have a reference to Aiming Component"));
+	}
+	else
+	{
+		FoundAimingComponent(AimingComponent);
 	}
 }
 

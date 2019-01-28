@@ -15,6 +15,7 @@ class BATTLETANK_API AProjectile : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AProjectile();
+	static float GetProjectileSpeed();
 	void LaunchProjectile(float Speed) const;
 
 protected:
@@ -26,5 +27,8 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 private:
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
+	float ProjectileSpeed = 4000;
+
 	UProjectileMovementComponent* ProjectileMovementComponent = nullptr;
 };

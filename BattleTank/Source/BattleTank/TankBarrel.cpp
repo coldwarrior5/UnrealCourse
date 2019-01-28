@@ -3,7 +3,10 @@
 #include "TankBarrel.h"
 #include "Projectile.h"
 
-float UTankBarrel::GetProjectileSpeed() const { return ProjectileSpeed; }
+float UTankBarrel::GetProjectileSpeed()
+{
+	return AProjectile::GetProjectileSpeed();
+}
 
 void UTankBarrel::Elevate(float RelativeSpeed)
 {
@@ -35,7 +38,7 @@ void UTankBarrel::Fire()
 			this->GetSocketLocation(FName(TEXT("ProjectileSocket"))),
 			this->GetSocketRotation(FName(TEXT("ProjectileSocket")))
 			);
-		Projectile->LaunchProjectile(ProjectileSpeed);
+		Projectile->LaunchProjectile(GetProjectileSpeed());
 		LastFireTime = GetWorld()->GetTimeSeconds();
 	}
 }

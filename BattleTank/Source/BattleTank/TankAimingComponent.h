@@ -33,7 +33,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Control")
 	void RotateAt(FVector HitLocation);
 	UFUNCTION(BlueprintCallable, Category = "Control")
-	void Fire();
+	void Fire() const;
 
 protected:
 	// Needs to be protected so it can be accessed from the subclass that is the blueprint

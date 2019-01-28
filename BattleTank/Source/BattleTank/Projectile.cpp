@@ -2,7 +2,6 @@
 
 #include "Projectile.h"
 
-
 // Sets default values
 AProjectile::AProjectile()
 {
@@ -10,6 +9,14 @@ AProjectile::AProjectile()
 	PrimaryActorTick.bCanEverTick = true;
 	ProjectileMovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>(FName(TEXT("Movement Component")));
 	ProjectileMovementComponent->bAutoActivate = false;		// It doesn't fly off until we activate it
+}
+
+float AProjectile::GetProjectileSpeed()
+{
+	auto temp = AProjectile();
+	const auto ProjectileSpeed = temp.ProjectileSpeed;
+	temp.Destroy();
+	return ProjectileSpeed;
 }
 
 void AProjectile::LaunchProjectile(float Speed) const

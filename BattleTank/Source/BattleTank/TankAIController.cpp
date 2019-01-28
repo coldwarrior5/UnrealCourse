@@ -2,6 +2,7 @@
 #include "Engine/World.h"
 #include "GameFramework/PlayerController.h"
 #include "Tank.h"
+// Depends on movement component via pathfinding system
 
 void ATankAIController::BeginPlay()
 {
@@ -15,9 +16,9 @@ void ATankAIController::Tick(float DeltaSeconds)
 	const auto PlayerTank = GetPlayerTank();
 	if(ensure(ControlledTank && PlayerTank))
 	{
-		MoveToActor(PlayerTank, AcceptanceRadius);
+		MoveToActor(PlayerTank, AcceptanceRadius);		// Pathfinding system
 		ControlledTank->AimAt(PlayerTank->GetActorLocation());
-		//ControlledTank->Fire();
+		ControlledTank->Fire();
 	}
 }
 

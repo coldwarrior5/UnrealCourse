@@ -44,7 +44,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation)
 	);
 	if (bHaveAimSolution)
 	{
-		auto AimDirection = OutLaunchVelocity.GetSafeNormal();
+		const auto AimDirection = OutLaunchVelocity.GetSafeNormal();
 		AdjustTurretForShot(AimDirection);
 	}
 	else
@@ -63,7 +63,7 @@ void UTankAimingComponent::RotateAt(FVector HitLocation)
 	AdjustTurretForShot(AimDirection);
 }
 
-void UTankAimingComponent::Fire()
+void UTankAimingComponent::Fire() const
 {
 	if (!ensure(Barrel)) { return; }
 	Barrel->Fire();

@@ -14,7 +14,7 @@ class BATTLETANK_API UTankBarrel : public UStaticMeshComponent
 	GENERATED_BODY()
 
 public:
-	float GetProjectileSpeed() const;
+	static float GetProjectileSpeed();
 	// -1 is max downward speed, and +1 is max up speed
 	void Elevate(float RelativeSpeed);
 	void Fire();
@@ -31,8 +31,6 @@ private:
 	TSubclassOf<AProjectile> ProjectileBlueprint = nullptr;		// This ensures that designer in Blueprint cannot assign wrong class
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 	float ReloadTimeInSeconds = 5;
-	UPROPERTY(EditDefaultsOnly, Category = "Firing")
-	float ProjectileSpeed = 4000;
 
 	float LastFireTime = -ReloadTimeInSeconds;
 };

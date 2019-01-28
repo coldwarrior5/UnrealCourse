@@ -15,7 +15,14 @@ class BATTLETANK_API AProjectile : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AProjectile();
-	static float GetProjectileSpeed();
+	static float GetProjectileSpeed() 
+	{
+		// TODO Create instance and return the value of the projectile speed
+		//AProjectile TempProjectile{};		// This is how we create an instance of a class
+		//const auto ProjectileSpeed = TempProjectile.ProjectileSpeed;
+		//TempProjectile.Destroy();
+		return 4000;
+	};
 	void LaunchProjectile(float Speed) const;
 
 protected:

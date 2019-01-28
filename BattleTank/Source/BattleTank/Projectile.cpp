@@ -11,14 +11,6 @@ AProjectile::AProjectile()
 	ProjectileMovementComponent->bAutoActivate = false;		// It doesn't fly off until we activate it
 }
 
-float AProjectile::GetProjectileSpeed()
-{
-	auto temp = AProjectile();
-	const auto ProjectileSpeed = temp.ProjectileSpeed;
-	temp.Destroy();
-	return ProjectileSpeed;
-}
-
 void AProjectile::LaunchProjectile(float Speed) const
 {
 	UE_LOG(LogTemp, Warning, TEXT("%f: projectile speed"), Speed)

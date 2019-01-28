@@ -6,6 +6,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "TankBarrel.h"
 #include "TankTurret.h"
+#include "../../../../../../../../Program Files/Epic Games/UE_4.21/Engine/Plugins/Experimental/AlembicImporter/Source/ThirdParty/Alembic/AlembicDeploy/include/halfLimits.h"
 
 // Sets default values for this component's properties
 UTankAimingComponent::UTankAimingComponent()
@@ -72,13 +73,21 @@ void UTankAimingComponent::Fire() const
 void UTankAimingComponent::AdjustTurretForShot(FVector AimDirection)
 {
 	if (!ensure(Barrel && Turret)) { return; }
-	FiringStatus = EFiringStatus::Aiming;
 	// Work out difference between current barrel rotation, and AimDirection
 	const auto BarrelRotator = Barrel->GetForwardVector().Rotation();
 	const auto AimAsRotator = AimDirection.Rotation();
 	auto RotationDifference = AimAsRotator - BarrelRotator;
 	RotationDifference.Normalize();
+
+	if(!FMath::IsNearlyZero(RotationDifference.Pitch, 0.1f) ||  !FMath::IsNearlyZero(RotationDifference.Yaw, 0.1f))
+	{
+		FiringStatus = EFiringStatus::Aiming;
+		Barrel->Elevate(RotationDifference.Pitch);
+		Turret->Rotate(RotationDifference.Yaw);
+	}
+	else
+	{
+		FiringStatus = EFiringStatus::Ready;
+	}
 	
-	Barrel->Elevate(RotationDifference.Pitch);
-	Turret->Rotate(RotationDifference.Yaw);
 }

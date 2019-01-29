@@ -6,7 +6,6 @@
 #include "GameFramework/PlayerController.h"
 #include "TankPlayerController.generated.h"	// Must be the last include
 
-class ATank;
 class UTankAimingComponent;
 
 UCLASS()
@@ -25,7 +24,7 @@ public:
 		float TankShotRange = 100000;
 protected:
 	UFUNCTION(BlueprintCallable, Category = "Setup")
-	ATank* GetControlledTank() const;
+	UTankAimingComponent* GetAimingComponent() const;
 	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
 	void FoundAimingComponent(UTankAimingComponent* AimingCompReference);
 

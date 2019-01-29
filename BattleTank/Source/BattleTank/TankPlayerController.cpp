@@ -3,19 +3,13 @@
 #include "TankPlayerController.h"
 #include "CollisionQueryParams.h"
 #include "Engine/World.h"
-#include "Tank.h"
 #include "TankAimingComponent.h"
 
 void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-	const auto ControlledTank = GetControlledTank();
-	if(!ensure(ControlledTank))
-	{
-		UE_LOG(LogTemp, Warning, TEXT("The tank pawn is not attached to the player controller"));
-		return;
-	}
-	const auto AimingComponent = ControlledTank->FindComponentByClass<UTankAimingComponent>();
+
+	const auto AimingComponent = GetAimingComponent();
 	if(!ensure(AimingComponent))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Player controller doesn't have a reference to Aiming Component"));
@@ -32,24 +26,24 @@ void ATankPlayerController::Tick(float DeltaSeconds)
 	AimAtReticle();
 }
 
-ATank* ATankPlayerController::GetControlledTank() const
+UTankAimingComponent* ATankPlayerController::GetAimingComponent() const
 {
-	return Cast<ATank>(GetPawn());
+	return GetPawn()->FindComponentByClass<UTankAimingComponent>();
 }
 
 void ATankPlayerController::AimAtReticle() const
 {
-	const auto ControlledTank = GetControlledTank();
-	if(!ensure(ControlledTank)){ return; }
+	const auto AimingComponent = GetAimingComponent();
+	if (!ensure(AimingComponent)) { return; }
 
 	FVector HitLocation; // Out parameter
 	if(FindSightRayHitLocation(HitLocation))
 	{
-		GetControlledTank()->AimAt(HitLocation);
+		AimingComponent->AimAt(HitLocation);
 	}
 	else
 	{
-		GetControlledTank()->RotateAt(HitLocation);
+		AimingComponent->RotateAt(HitLocation);
 	}
 }
 
@@ -58,7 +52,7 @@ void ATankPlayerController::AimAtReticle() const
 
 bool ATankPlayerController::FindSightRayHitLocation(FVector& OutHitLocation) const
 {
-	//auto EyeLocation = GetControlledTank()->GetPawnViewLocation();
+	//auto EyeLocation = GetAimingComponent()->GetPawnViewLocation();
 	FVector LookDirection;
 	FVector2D ScreenLocation = GetReticleScreenLocation();
 

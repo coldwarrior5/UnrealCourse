@@ -28,6 +28,7 @@ void ATankPlayerController::Tick(float DeltaSeconds)
 
 UTankAimingComponent* ATankPlayerController::GetAimingComponent() const
 {
+	if (!GetPawn()) { return nullptr; }		// if not possessing, i.e. run-time
 	return GetPawn()->FindComponentByClass<UTankAimingComponent>();
 }
 

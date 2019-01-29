@@ -29,21 +29,28 @@ public:
 	void Initialise(UTankTurret* TurretToSet, UTankBarrel* BarrelToSet);
 	// Called every frame
 	UFUNCTION(BlueprintCallable, Category = "Control")
-	void AimAt(FVector HitLocation);
+	void AimAt(FVector HitLocation) const;
 	UFUNCTION(BlueprintCallable, Category = "Control")
-	void RotateAt(FVector HitLocation);
+	void RotateAt(FVector HitLocation) const;
 	UFUNCTION(BlueprintCallable, Category = "Control")
-	void Fire() const;
+	void Fire();
 
 protected:
 	// Needs to be protected so it can be accessed from the subclass that is the blueprint
 	UPROPERTY(BlueprintReadOnly, Category = "State")
-	EFiringStatus FiringStatus = EFiringStatus::Ready;
+	EFiringStatus FiringStatus = EFiringStatus::Loading;
 
 private:
 	UTankBarrel* Barrel = nullptr;
 	UTankTurret* Turret = nullptr;
-	void AdjustTurretForShot(FVector AimDirection);
+	float LastFireTime = 0;
+	FVector LastBarrelPosition;
+
+	void AdjustTurretForShot(FVector AimDirection) const;
 	// Sets default values for this component's properties
 	UTankAimingComponent();
+	virtual void BeginPlay() override;
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	bool IsBarrelMoving();
+
 };

@@ -20,7 +20,7 @@ void UTankBarrel::Elevate(float RelativeSpeed)
 	SetRelativeRotation(NewElevation);
 }
 
-void UTankBarrel::Fire()
+void UTankBarrel::Fire() const
 {
 	if (!ensure(ProjectileBlueprint))
 	{
@@ -28,17 +28,16 @@ void UTankBarrel::Fire()
 		return;
 	}
 
-	const auto IsReady = GetWorld()->GetTimeSeconds() - LastFireTime > ReloadTimeInSeconds;
+	// Spawn a projectile at the socket location of the barrel
+	const auto Projectile = GetWorld()->SpawnActor<AProjectile>(
+		ProjectileBlueprint,
+		this->GetSocketLocation(FName(TEXT("ProjectileSocket"))),
+		this->GetSocketRotation(FName(TEXT("ProjectileSocket")))
+		);
+	Projectile->LaunchProjectile(GetProjectileSpeed());
+}
 
-	if(IsReady)
-	{
-		// Spawn a projectile at the socket location of the barrel
-		const auto Projectile = GetWorld()->SpawnActor<AProjectile>(
-			ProjectileBlueprint,
-			this->GetSocketLocation(FName(TEXT("ProjectileSocket"))),
-			this->GetSocketRotation(FName(TEXT("ProjectileSocket")))
-			);
-		Projectile->LaunchProjectile(GetProjectileSpeed());
-		LastFireTime = GetWorld()->GetTimeSeconds();
-	}
+float UTankBarrel::GetReloadTime() const
+{
+	return ReloadTimeInSeconds;
 }

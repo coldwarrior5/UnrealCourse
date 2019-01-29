@@ -17,7 +17,8 @@ public:
 	static float GetProjectileSpeed();
 	// -1 is max downward speed, and +1 is max up speed
 	void Elevate(float RelativeSpeed);
-	void Fire();
+	void Fire() const;
+	float GetReloadTime() const;
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
@@ -31,6 +32,4 @@ private:
 	TSubclassOf<AProjectile> ProjectileBlueprint = nullptr;		// This ensures that designer in Blueprint cannot assign wrong class
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 	float ReloadTimeInSeconds = 5;
-
-	float LastFireTime = -ReloadTimeInSeconds;
 };

@@ -6,14 +6,36 @@
 #include "Kismet/GameplayStatics.h"
 #include "TankBarrel.h"
 #include "TankTurret.h"
-#include "../../../../../../../../Program Files/Epic Games/UE_4.21/Engine/Plugins/Experimental/AlembicImporter/Source/ThirdParty/Alembic/AlembicDeploy/include/halfLimits.h"
 
 // Sets default values for this component's properties
 UTankAimingComponent::UTankAimingComponent()
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
+	// Set this component to be initialized when the game starts, and to be ticked every frame.
+	//  You can turn these features off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
+}
+
+void UTankAimingComponent::BeginPlay()
+{
+	Super::BeginPlay();
+	LastFireTime = GetWorld()->GetTimeSeconds();
+}
+
+void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType,
+	FActorComponentTickFunction* ThisTickFunction)
+{
+	if(GetWorld()->GetTimeSeconds() - LastFireTime < Barrel->GetReloadTime())
+	{
+		FiringStatus = EFiringStatus::Loading;
+	}
+	else if(IsBarrelMoving())
+	{
+		FiringStatus = EFiringStatus::Aiming;
+	}
+	else
+	{
+		FiringStatus = EFiringStatus::Ready;
+	}
 }
 
 // Sets default values for this component's properties
@@ -21,15 +43,16 @@ void UTankAimingComponent::Initialise(UTankTurret* TurretToSet, UTankBarrel* Bar
 {
 	Turret = TurretToSet;
 	Barrel = BarrelToSet;
+	LastBarrelPosition = Barrel->GetForwardVector();
 }
 
 
-void UTankAimingComponent::AimAt(FVector HitLocation)
+void UTankAimingComponent::AimAt(FVector HitLocation) const
 {
 	if (!ensure(Barrel)) { return; }
 	FVector OutLaunchVelocity(0);
 	const auto StartLocation = Barrel->GetSocketLocation(FName(TEXT("ProjectileSocket")));
-	const auto LaunchSpeed = Barrel->GetProjectileSpeed();
+	const auto LaunchSpeed = UTankBarrel::GetProjectileSpeed();
 
 	// Calculate the out launch velocity
 	const auto bHaveAimSolution = UGameplayStatics::SuggestProjectileVelocity(
@@ -54,7 +77,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation)
 	}
 }
 
-void UTankAimingComponent::RotateAt(FVector HitLocation)
+void UTankAimingComponent::RotateAt(FVector HitLocation) const
 {
 	if (!ensure(Barrel)) { return; }
 	const auto StartLocation = Barrel->GetSocketLocation(FName(TEXT("ProjectileSocket")));
@@ -64,30 +87,34 @@ void UTankAimingComponent::RotateAt(FVector HitLocation)
 	AdjustTurretForShot(AimDirection);
 }
 
-void UTankAimingComponent::Fire() const
+void UTankAimingComponent::Fire()
 {
 	if (!ensure(Barrel)) { return; }
-	Barrel->Fire();
+	if(FiringStatus != EFiringStatus::Loading)
+	{
+		Barrel->Fire();
+		LastFireTime = GetWorld()->GetTimeSeconds();
+	}
 }
 
-void UTankAimingComponent::AdjustTurretForShot(FVector AimDirection)
+void UTankAimingComponent::AdjustTurretForShot(FVector AimDirection) const
 {
 	if (!ensure(Barrel && Turret)) { return; }
-	// Work out difference between current barrel rotation, and AimDirection
+	// Work out difference between current barrel rotation, and LastBarrelPosition
 	const auto BarrelRotator = Barrel->GetForwardVector().Rotation();
 	const auto AimAsRotator = AimDirection.Rotation();
 	auto RotationDifference = AimAsRotator - BarrelRotator;
 	RotationDifference.Normalize();
 
-	if(!FMath::IsNearlyZero(RotationDifference.Pitch, 0.1f) ||  !FMath::IsNearlyZero(RotationDifference.Yaw, 0.1f))
-	{
-		FiringStatus = EFiringStatus::Aiming;
-		Barrel->Elevate(RotationDifference.Pitch);
-		Turret->Rotate(RotationDifference.Yaw);
-	}
-	else
-	{
-		FiringStatus = EFiringStatus::Ready;
-	}
-	
+	Barrel->Elevate(RotationDifference.Pitch);
+	Turret->Rotate(RotationDifference.Yaw);
+}
+
+bool UTankAimingComponent::IsBarrelMoving()
+{
+	if (!ensure(Barrel)) { return false; }
+	auto BarrelForwardVector = Barrel->GetForwardVector();
+	const auto Result = !BarrelForwardVector.Equals(LastBarrelPosition, 0.001f);
+	LastBarrelPosition = BarrelForwardVector;
+	return Result;
 }

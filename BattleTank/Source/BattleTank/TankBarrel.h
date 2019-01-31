@@ -18,6 +18,7 @@ public:
 	// -1 is max downward speed, and +1 is max up speed
 	void Elevate(float RelativeSpeed);
 	void Fire() const;
+	void Fire(float ProjectileSpeed) const;
 	float GetReloadTime() const;
 
 private:

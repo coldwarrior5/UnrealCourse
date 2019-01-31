@@ -13,12 +13,17 @@ void ATankAIController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 	auto AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
+	TankShotRange = AimingComponent->GetTankShotRange();
 	const auto PlayerTank = GetPlayerTank();
 	if(ensure(AimingComponent && PlayerTank))
 	{
 		MoveToActor(PlayerTank, AcceptanceRadius);		// Path-finding system
-		AimingComponent->AimAt(PlayerTank->GetActorLocation());
-		AimingComponent->Fire();
+		const auto PlayerLocation = PlayerTank->GetActorLocation();
+		if(FVector::Dist(PlayerLocation, GetPawn()->GetActorLocation()) > TankShotRange)
+			return;
+		AimingComponent->AimAt(PlayerLocation);
+		if(AimingComponent->IsLockedOnTarget())
+			AimingComponent->Fire();
 	}
 }
 

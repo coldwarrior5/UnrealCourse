@@ -21,7 +21,7 @@ public:
 private:
 	// Max force per track in Newtons
 	UPROPERTY(EditDefaultsOnly)
-	float TrackMaxDrivingForce = 20000000;		// mass * acceleration = 40 tons at 0.5g acceleration
+	float TrackMaxDrivingForce = 30000000;		// mass * acceleration = 40 tons at 0.5g acceleration
 
 private:
 	float CurrentThrottle = 0;

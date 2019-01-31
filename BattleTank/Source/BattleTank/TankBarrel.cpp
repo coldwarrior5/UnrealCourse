@@ -22,6 +22,11 @@ void UTankBarrel::Elevate(float RelativeSpeed)
 
 void UTankBarrel::Fire() const
 {
+	Fire(AProjectile::GetProjectileSpeed());
+}
+
+void UTankBarrel::Fire(const float ProjectileSpeed) const
+{
 	if (!ensure(ProjectileBlueprint))
 	{
 		UE_LOG(LogTemp, Error, TEXT("Tanks are not assigned projectile blueprint!"));
@@ -34,7 +39,7 @@ void UTankBarrel::Fire() const
 		this->GetSocketLocation(FName(TEXT("ProjectileSocket"))),
 		this->GetSocketRotation(FName(TEXT("ProjectileSocket")))
 		);
-	Projectile->LaunchProjectile(GetProjectileSpeed());
+	Projectile->LaunchProjectile(ProjectileSpeed);
 }
 
 float UTankBarrel::GetReloadTime() const

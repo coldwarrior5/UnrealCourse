@@ -9,6 +9,7 @@
 UENUM()
 enum class EFiringStatus : uint8
 {
+	NoAmmo,
 	Loading,
 	Aiming,
 	Ready
@@ -35,16 +36,30 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Control")
 	void Fire();
 
+	EFiringStatus GetFiringState() const;
+	bool IsLockedOnTarget() const;
+	float GetTankShotRange() const;
+
 protected:
 	// Needs to be protected so it can be accessed from the subclass that is the blueprint
 	UPROPERTY(BlueprintReadOnly, Category = "State")
 	EFiringStatus FiringStatus = EFiringStatus::Loading;
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
+	float TankShotRange = 100000;
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
+	float ProjectileSpeed = 4000;
+	UFUNCTION(BlueprintCallable)
+	int GetCurrentAmmo() const { return CurrentAmmo; }
+	UFUNCTION(BlueprintCallable)
+	int GetTotalAmmo() const { return TotalAmmo; }
 
 private:
 	UTankBarrel* Barrel = nullptr;
 	UTankTurret* Turret = nullptr;
 	float LastFireTime = 0;
 	FVector LastBarrelPosition;
+	const int TotalAmmo = 5;
+	int CurrentAmmo = TotalAmmo;
 
 	void AdjustTurretForShot(FVector AimDirection) const;
 	// Sets default values for this component's properties

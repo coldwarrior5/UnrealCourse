@@ -27,6 +27,7 @@ void UTankTrack::ApplySidewaysForce() const
 
 void UTankTrack::DriveTrack() const
 {
+	UE_LOG(LogTemp, Warning, TEXT("%s: Throttle: %f"), *GetName(), CurrentThrottle)
 	const auto ForceApplied = GetForwardVector() * CurrentThrottle * TrackMaxDrivingForce;
 	const auto ForceLocation = GetComponentLocation();
 	auto TankRoot = Cast<UPrimitiveComponent>(GetOwner()->GetRootComponent());

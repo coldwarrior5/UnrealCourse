@@ -17,6 +17,7 @@ void ATankPlayerController::BeginPlay()
 	else
 	{
 		FoundAimingComponent(AimingComponent);
+		TankShotRange = AimingComponent->GetTankShotRange();
 	}
 }
 

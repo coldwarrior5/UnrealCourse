@@ -20,8 +20,7 @@ public:
 		float ReticleXLocation = 0.5;
 	UPROPERTY(BlueprintReadWrite)
 		float ReticleYLocation = 0.3;
-	UPROPERTY(BlueprintReadWrite)
-		float TankShotRange = 100000;
+
 protected:
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 	UTankAimingComponent* GetAimingComponent() const;
@@ -34,4 +33,5 @@ private:
 	bool GetLookVectorHitLocation(FVector LookDirection, FVector& OutHitLocation) const;
 	bool FindSightRayHitLocation(FVector& OutHitLocation) const;
 	bool GetLookDirection(FVector2D ScreenLocation, FVector& LookDirection) const;
+	float TankShotRange = 0;
 };

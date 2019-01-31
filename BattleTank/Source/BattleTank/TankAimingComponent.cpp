@@ -7,6 +7,10 @@
 #include "TankBarrel.h"
 #include "TankTurret.h"
 
+EFiringStatus UTankAimingComponent::GetFiringState() const { return FiringStatus; }
+bool UTankAimingComponent::IsLockedOnTarget() const { return FiringStatus == EFiringStatus::Ready; }
+float UTankAimingComponent::GetTankShotRange() const { return TankShotRange; }
+
 // Sets default values for this component's properties
 UTankAimingComponent::UTankAimingComponent()
 {
@@ -37,6 +41,11 @@ void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 	{
 		FiringStatus = EFiringStatus::Ready;
 	}
+
+	if (CurrentAmmo <= 0)
+	{
+		FiringStatus = EFiringStatus::NoAmmo;
+	}
 }
 
 // Sets default values for this component's properties
@@ -53,7 +62,8 @@ void UTankAimingComponent::AimAt(FVector HitLocation) const
 	if (!ensure(Barrel)) { return; }
 	FVector OutLaunchVelocity(0);
 	const auto StartLocation = Barrel->GetSocketLocation(FName(TEXT("ProjectileSocket")));
-	const auto LaunchSpeed = UTankBarrel::GetProjectileSpeed();
+	// const auto LaunchSpeed = UTankBarrel::GetProjectileSpeed();
+	const auto LaunchSpeed = ProjectileSpeed;
 
 	// Calculate the out launch velocity
 	const auto bHaveAimSolution = UGameplayStatics::SuggestProjectileVelocity(
@@ -91,9 +101,12 @@ void UTankAimingComponent::RotateAt(FVector HitLocation) const
 void UTankAimingComponent::Fire()
 {
 	if (!ensure(Barrel)) { return; }
-	if(FiringStatus != EFiringStatus::Loading)
+	if(FiringStatus != EFiringStatus::Loading && FiringStatus != EFiringStatus::NoAmmo)
 	{
-		Barrel->Fire();
+		UE_LOG(LogTemp, Warning, TEXT("Projectile speed: %f"), ProjectileSpeed);
+		//Barrel->Fire();
+		Barrel->Fire(ProjectileSpeed);
+		CurrentAmmo--;
 		LastFireTime = GetWorld()->GetTimeSeconds();
 	}
 }

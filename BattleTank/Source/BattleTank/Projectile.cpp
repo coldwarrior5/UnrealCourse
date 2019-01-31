@@ -11,6 +11,12 @@ AProjectile::AProjectile()
 	ProjectileMovementComponent->bAutoActivate = false;		// It doesn't fly off until we activate it
 }
 
+float AProjectile::GetProjectileSpeed()
+{
+	// TODO make the projectile return it's speed property
+	return 0;
+}
+
 void AProjectile::LaunchProjectile(float Speed) const
 {
 	ProjectileMovementComponent->SetVelocityInLocalSpace(FVector::ForwardVector * Speed);
@@ -21,7 +27,6 @@ void AProjectile::LaunchProjectile(float Speed) const
 void AProjectile::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // Called every frame

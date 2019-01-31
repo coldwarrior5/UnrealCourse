@@ -16,8 +16,12 @@ public:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
 
+protected:
+	// How close can the AI tank get close to the player
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+	float AcceptanceRadius = 8000;
+
 private:
 	APawn* GetPlayerTank() const;
-	// How close can the AI tank get close to the player
-	const float AcceptanceRadius = 5000;
+	float TankShotRange = 0;
 };

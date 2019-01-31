@@ -103,7 +103,6 @@ void UTankAimingComponent::Fire()
 	if (!ensure(Barrel)) { return; }
 	if(FiringStatus != EFiringStatus::Loading && FiringStatus != EFiringStatus::NoAmmo)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Projectile speed: %f"), ProjectileSpeed);
 		//Barrel->Fire();
 		Barrel->Fire(ProjectileSpeed);
 		CurrentAmmo--;

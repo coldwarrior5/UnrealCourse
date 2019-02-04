@@ -47,19 +47,20 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 	float TankShotRange = 100000;
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
-	float ProjectileSpeed = 4000;
+	float ProjectileSpeed = 8000;
 	UFUNCTION(BlueprintCallable)
-	int GetCurrentAmmo() const { return CurrentAmmo; }
+	int32 GetCurrentAmmo() const { return CurrentAmmo; }
 	UFUNCTION(BlueprintCallable)
-	int GetTotalAmmo() const { return TotalAmmo; }
+	int32 GetTotalAmmo() const { return TotalAmmo; }
 
 private:
 	UTankBarrel* Barrel = nullptr;
 	UTankTurret* Turret = nullptr;
 	float LastFireTime = 0;
 	FVector LastBarrelPosition;
-	const int TotalAmmo = 5;
-	int CurrentAmmo = TotalAmmo;
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
+	int32 TotalAmmo = 100;
+	int32 CurrentAmmo = TotalAmmo;
 
 	void AdjustTurretForShot(FVector AimDirection) const;
 	// Sets default values for this component's properties

@@ -23,6 +23,7 @@ void UTankAimingComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	LastFireTime = GetWorld()->GetTimeSeconds();
+	CurrentAmmo = TotalAmmo;
 }
 
 void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType,

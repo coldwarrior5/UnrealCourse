@@ -6,13 +6,26 @@
 #include "GameFramework/Pawn.h"
 #include "Tank.generated.h"
 
-UCLASS()
+UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class BATTLETANK_API ATank : public APawn
 {
 	GENERATED_BODY()
 
+public:
+	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
+
+protected:
+	UFUNCTION(BlueprintCallable)
+	int32 GetCurrentHealth() const { return CurrentHealth; }
+	UFUNCTION(BlueprintCallable)
+	int32 GetTotalHealth() const { return StartingHealth; }
 private:
 	// Sets default values for this pawn's properties
 	ATank();
 	virtual void BeginPlay() override;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+	int32 StartingHealth = 100;
+	UPROPERTY(VisibleAnywhere, Category = "Health")
+	int32 CurrentHealth = StartingHealth;
 };

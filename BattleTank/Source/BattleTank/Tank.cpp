@@ -14,3 +14,15 @@ void ATank::BeginPlay()
 {
 	Super::BeginPlay();
 }
+
+float ATank::TakeDamage(float DamageAmount, FDamageEvent const & DamageEvent, AController * EventInstigator, AActor * DamageCauser)
+{
+	const auto DamagePoints = FPlatformMath::RoundToInt(DamageAmount);
+	const auto DamageToApply = FMath::Clamp<int32>(DamagePoints, 0, CurrentHealth);
+	CurrentHealth -= DamageToApply;
+	if (CurrentHealth <= 0)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Tank died"));
+	}
+	return DamageToApply;
+}

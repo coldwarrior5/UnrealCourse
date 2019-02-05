@@ -4,6 +4,7 @@
 #include "CollisionQueryParams.h"
 #include "Engine/World.h"
 #include "TankAimingComponent.h"
+#include "Tank.h"
 
 void ATankPlayerController::BeginPlay()
 {
@@ -16,7 +17,12 @@ void ATankPlayerController::BeginPlay()
 	}
 	else
 	{
-		FoundAimingComponent(AimingComponent);
+		const auto Pawn = GetPawn();
+		const auto Tank = Cast<ATank>(Pawn);
+		if(ensure(Tank))
+		{
+			PlayerUIComponents(AimingComponent, Tank);
+		}
 		TankShotRange = AimingComponent->GetTankShotRange();
 	}
 }

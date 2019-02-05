@@ -19,7 +19,7 @@ public:
 protected:
 	// How close can the AI tank get close to the player
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
-	float AcceptanceRadius = 8000;
+	float AcceptanceRadius = 5000;
 
 private:
 	APawn* GetPlayerTank() const;

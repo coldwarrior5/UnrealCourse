@@ -59,7 +59,7 @@ private:
 	float LastFireTime = 0;
 	FVector LastBarrelPosition;
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
-	int32 TotalAmmo = 100;
+	int32 TotalAmmo = 30;
 	int32 CurrentAmmo = TotalAmmo;
 
 	void AdjustTurretForShot(FVector AimDirection) const;

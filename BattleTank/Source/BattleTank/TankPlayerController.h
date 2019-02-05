@@ -7,6 +7,7 @@
 #include "TankPlayerController.generated.h"	// Must be the last include
 
 class UTankAimingComponent;
+class ATank;
 
 UCLASS()
 class BATTLETANK_API ATankPlayerController : public APlayerController
@@ -25,7 +26,7 @@ protected:
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 	UTankAimingComponent* GetAimingComponent() const;
 	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
-	void FoundAimingComponent(UTankAimingComponent* AimingCompReference);
+	void PlayerUIComponents(UTankAimingComponent* AimingCompReference, ATank* TankReference);
 
 private:
 	void AimAtReticle() const;

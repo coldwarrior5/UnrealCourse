@@ -39,6 +39,22 @@ UTankAimingComponent* ATankPlayerController::GetAimingComponent() const
 	return GetPawn()->FindComponentByClass<UTankAimingComponent>();
 }
 
+void ATankPlayerController::SetPawn(APawn* InPawn)
+{
+	Super::SetPawn(InPawn);
+	if(InPawn)
+	{
+		auto Tank = Cast<ATank>(InPawn);
+		if (!ensure(Tank)) { return; }
+		Tank->OnDeath.AddUniqueDynamic(this, &ATankPlayerController::OnPossessedTankDeath);
+	}
+}
+
+void ATankPlayerController::OnPossessedTankDeath()
+{
+	StartSpectatingOnly();
+}
+
 void ATankPlayerController::AimAtReticle() const
 {
 	const auto AimingComponent = GetAimingComponent();

@@ -2,6 +2,7 @@
 #include "Engine/World.h"
 #include "GameFramework/PlayerController.h"
 #include "TankAimingComponent.h"
+#include "Tank.h"		// So we can implement OnDeath
 // Depends on movement component via path-finding system
 
 void ATankAIController::BeginPlay()
@@ -25,6 +26,23 @@ void ATankAIController::Tick(float DeltaSeconds)
 		if(AimingComponent->IsLockedOnTarget())
 			AimingComponent->Fire();
 	}
+}
+
+void ATankAIController::SetPawn(APawn* InPawn)
+{
+	Super::SetPawn(InPawn);
+	if(InPawn)
+	{
+		const auto PossessedTank = Cast<ATank>(InPawn);
+		if(!ensure(PossessedTank)) { return; }
+		PossessedTank->OnDeath.AddUniqueDynamic(this, &ATankAIController::OnPossessedTankDeath);
+	}
+}
+
+void ATankAIController::OnPossessedTankDeath()
+{
+	if (!GetPawn()) { return; }
+	GetPawn()->DetachFromControllerPendingDestroy();
 }
 
 APawn* ATankAIController::GetPlayerTank() const

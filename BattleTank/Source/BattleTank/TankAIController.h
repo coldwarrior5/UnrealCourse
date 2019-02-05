@@ -22,6 +22,10 @@ protected:
 	float AcceptanceRadius = 5000;
 
 private:
+	virtual void SetPawn(APawn* InPawn) override;
+	UFUNCTION()
+	void OnPossessedTankDeath();
 	APawn* GetPlayerTank() const;
+
 	float TankShotRange = 0;
 };

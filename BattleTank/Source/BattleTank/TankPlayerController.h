@@ -18,9 +18,9 @@ public:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
 	UPROPERTY(BlueprintReadWrite)
-		float ReticleXLocation = 0.5;
+	float ReticleXLocation = 0.5;
 	UPROPERTY(BlueprintReadWrite)
-		float ReticleYLocation = 0.3;
+	float ReticleYLocation = 0.3;
 
 protected:
 	UFUNCTION(BlueprintCallable, Category = "Setup")
@@ -29,10 +29,14 @@ protected:
 	void PlayerUIComponents(UTankAimingComponent* AimingCompReference, ATank* TankReference);
 
 private:
+	void SetPawn(APawn* InPawn) override;
+	UFUNCTION()
+	void OnPossessedTankDeath();
 	void AimAtReticle() const;
 	FVector2D GetReticleScreenLocation() const;
 	bool GetLookVectorHitLocation(FVector LookDirection, FVector& OutHitLocation) const;
 	bool FindSightRayHitLocation(FVector& OutHitLocation) const;
 	bool GetLookDirection(FVector2D ScreenLocation, FVector& LookDirection) const;
+
 	float TankShotRange = 0;
 };

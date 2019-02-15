@@ -16,7 +16,7 @@ void ATankAIController::Tick(float DeltaSeconds)
 	auto AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
 	TankShotRange = AimingComponent->GetTankShotRange();
 	const auto PlayerTank = GetPlayerTank();
-	if(ensure(AimingComponent && PlayerTank))
+	if(AimingComponent && PlayerTank)
 	{
 		MoveToActor(PlayerTank, AcceptanceRadius);		// Path-finding system
 		const auto PlayerLocation = PlayerTank->GetActorLocation();
@@ -34,7 +34,7 @@ void ATankAIController::SetPawn(APawn* InPawn)
 	if(InPawn)
 	{
 		const auto PossessedTank = Cast<ATank>(InPawn);
-		if(!ensure(PossessedTank)) { return; }
+		if(PossessedTank) { return; }
 		PossessedTank->OnDeath.AddUniqueDynamic(this, &ATankAIController::OnPossessedTankDeath);
 	}
 }
@@ -49,7 +49,7 @@ APawn* ATankAIController::GetPlayerTank() const
 {
 	const auto PlayerController = GetWorld()->GetFirstPlayerController();
 	
-	if(ensure(PlayerController))
+	if(PlayerController)
 	{
 		const auto Pawn = PlayerController->GetPawn();
 		if(Pawn)

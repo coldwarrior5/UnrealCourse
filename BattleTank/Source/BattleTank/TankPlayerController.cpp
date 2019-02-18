@@ -45,7 +45,7 @@ void ATankPlayerController::SetPawn(APawn* InPawn)
 	if(InPawn)
 	{
 		auto Tank = Cast<ATank>(InPawn);
-		if (!ensure(Tank)) { return; }
+		if (!Tank) { return; }
 		Tank->OnDeath.AddUniqueDynamic(this, &ATankPlayerController::OnPossessedTankDeath);
 	}
 }
@@ -58,7 +58,7 @@ void ATankPlayerController::OnPossessedTankDeath()
 void ATankPlayerController::AimAtReticle() const
 {
 	const auto AimingComponent = GetAimingComponent();
-	if (!ensure(AimingComponent)) { return; }
+	if (!AimingComponent) { return; }
 
 	FVector HitLocation; // Out parameter
 	if(FindSightRayHitLocation(HitLocation))

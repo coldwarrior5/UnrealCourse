@@ -24,7 +24,7 @@ TArray<ASprungWheel*> UTankTrack::GetWheels() const
 {
 	TArray<ASprungWheel*> ResultArray;
 	TArray<USceneComponent*> Children;
-	GetChildrenComponents(this, Children);
+	GetChildrenComponents(this != nullptr, Children);
 	for (auto Child : Children)
 	{
 		const auto SpawnPointChild = Cast<USpawnPoint>(Child);
